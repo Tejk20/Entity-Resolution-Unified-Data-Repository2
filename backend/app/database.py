@@ -1,15 +1,23 @@
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
-from app.config import settings, DATA_DIR
+from pathlib import Path
+
+from app.config import settings, DATA_DIR, BASE_DIR
 
 connect_args = {}
-if settings.database_url.startswith("sqlite"):
+database_url = settings.database_url
+if database_url.startswith("sqlite"):
     connect_args = {"check_same_thread": False}
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+    raw = database_url.replace("sqlite:///", "", 1)
+    if raw and not raw.startswith("/"):
+        db_path = (BASE_DIR / raw.lstrip("./")).resolve()
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+        database_url = f"sqlite:///{db_path}"
 
 engine = create_engine(
-    settings.database_url,
+    database_url,
     connect_args=connect_args,
     pool_pre_ping=True,
 )

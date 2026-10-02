@@ -114,18 +114,20 @@ git push -u origin main
 
 ## Free-tier hosting (zero-downtime)
 
-Recommended split: **Render** for the API, **Vercel** for the Next.js UI (or Railway for both).
+### Render (recommended, single public URL)
 
-### Render (API)
+One-click Blueprint (login-free web service from this repo):
 
-1. New Web Service from this GitHub repo, root `backend`
-2. Build: `pip install -r requirements.txt`
-3. Start: `gunicorn app.main:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT --workers 2 --timeout 120`
-4. Health check: `/api/health`
-5. Env: `PYTHONPATH=.`, `CORS_ORIGINS=*`
-6. Blueprint alternative: `render.yaml`
+https://render.com/deploy?repo=https://github.com/Tejk20/Entity-Resolution-Unified-Data-Repository2
 
-Render deploys a new instance then switches traffic (zero downtime on paid; free tier restarts in place).
+Manual setup:
+
+1. New Blueprint / Web Service from `Tejk20/Entity-Resolution-Unified-Data-Repository2`
+2. Runtime: Python. Build: `bash scripts/render-build.sh`. Start: `bash scripts/render-native-start.sh`
+3. Health check: `/api/health`
+4. Env: `PYTHONPATH=backend`, `CORS_ORIGINS=*`, `INTERNAL_API_URL=http://127.0.0.1:8000`
+
+The start script runs FastAPI on localhost:8000 and Next.js on `$PORT`, so Render exposes one public URL. `render.yaml` is the Blueprint source. Docker alternative: root `Dockerfile`.
 
 ### Vercel (UI)
 

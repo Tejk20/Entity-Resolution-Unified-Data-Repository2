@@ -1,29 +1,20 @@
 services:
   - type: web
-    name: nexus-resolve-api
+    name: nexus-resolve
     runtime: python
     plan: free
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app.main:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT --workers 2 --timeout 120
+    buildCommand: bash scripts/render-build.sh
+    startCommand: bash scripts/render-native-start.sh
+    healthCheckPath: /api/health
+    autoDeploy: true
     envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
       - key: PYTHONPATH
-        value: /opt/render/project/src
+        value: backend
       - key: DATABASE_URL
         value: sqlite:///./data/entity_store.db
       - key: CORS_ORIGINS
         value: "*"
-
-  - type: web
-    name: nexus-resolve-web
-    runtime: node
-    plan: free
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    startCommand: node .next/standalone/server.js
-    envVars:
       - key: INTERNAL_API_URL
-        fromService:
-          name: nexus-resolve-api
-          type: web
-          property: host
+        value: http://127.0.0.1:8000
