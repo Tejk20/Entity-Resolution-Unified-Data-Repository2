@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: #070b14;
+  color: #e8eef8;
+  min-height: 100%;
+}
+
+body {
+  background-image:
+    radial-gradient(1200px 500px at 10% -10%, rgba(45, 212, 191, 0.12), transparent 50%),
+    radial-gradient(900px 400px at 90% 0%, rgba(56, 189, 248, 0.08), transparent 45%),
+    linear-gradient(180deg, #070b14 0%, #0c1220 100%);
+}
+
+.grid-overlay {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.card {
+  @apply rounded-2xl border border-white/10 bg-ink-800/70 backdrop-blur-md shadow-xl;
+}
+
+.chip {
+  @apply inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs font-medium tracking-wide;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-xl bg-accent-500 px-4 py-2 text-sm font-semibold text-ink-950 transition hover:bg-accent-400;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10;
+}
+
+input,
+select,
+textarea {
+  @apply w-full rounded-xl border border-white/10 bg-ink-900 px-3 py-2 text-sm text-white outline-none focus:border-accent-500;
+}
